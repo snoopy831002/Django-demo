@@ -3,6 +3,7 @@ from django.http import HttpResponse,HttpResponseNotFound, JsonResponse
 from django.template import loader
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
+from .models import create_user
 
 # Create your views here.
 def index(request):
@@ -20,3 +21,7 @@ def articles(request):
 def author(request):
     return render(request,"author.html")
     #return redirect('articles')
+
+def create(request):
+    create_user()
+    return HttpResponse("User created")

@@ -7,7 +7,7 @@
 <body>
 
 
-    <form method="POST" action="/blog/comments">{% csrf_token %}
+    <form method="POST" action="/blog/upload" enctype=multipart/form-data>{% csrf_token %}
 <!--
       <label for="content">Comment:</label><br>
       <input type="text" id="content" name="content"><br>

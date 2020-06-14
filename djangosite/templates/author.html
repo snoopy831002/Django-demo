@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <h1>Hi this is me~</h1>
-</body>
-</html>
+{% extends "base_generic.html" %}
+{% block content %}
+    <h1>Hi this is {{ name }}~</h1>
+{% endblock %}
+{% block sidebar %}
+{% load static %}
+<img src="{% static 'doge.gif' %}" alt="Girl in a jacket" width="500" height="600">
+      <ul class="sidebar-nav">
+          <h1>Side bar has  {{ sidebar|length }} elements~</h1>
+          {% for bar in sidebar %}
+                <li><a href="">{{ bar }}</a></li>
+          {% endfor %}
+      </ul>
+{% endblock %}

@@ -20,6 +20,12 @@ def create_articles(content):
     Articles.objects.create(user= user, content=content)
     return
 
+
+def get_articles():
+    user = auth_user.objects.get(username="root")
+    return Articles.objects.filter(user = user).all()
+
+
 #def get_article_owner():
     #article = Articles.objects.get(id=2)
     #user = article.user

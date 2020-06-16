@@ -11,4 +11,14 @@
                 <li><a href="">{{ bar }}</a></li>
           {% endfor %}
       </ul>
+
+<table>
+{% for a in articles %}
+  <tr>
+    <td>{{ a.user }}</td>
+    <td>{{ a.content }}</td>
+    <td>{{ a.last_update }}</td>
+  </tr>
+    {% endfor %}
+</table>
 {% endblock %}

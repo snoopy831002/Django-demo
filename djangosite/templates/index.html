@@ -1,0 +1,22 @@
+{% extends "base_generic.html" %}
+{% block content %}
+
+{% if user.is_authenticated %}
+    <h1>Hi this is {{ user.username }}~</h1>
+{% else %}
+    <h1>You are not logged in ~</h1>
+{% endif %}
+{% endblock %}
+
+{% block sidebar %}
+{% load static %}
+ <form method="POST" action="/blog/login">{% csrf_token %}
+<!--
+      <label for="content">Comment:</label><br>
+      <input type="text" id="content" name="content"><br>
+-->
+        {{ form }}
+        <input type="submit" value="Submit">
+
+    </form>
+{% endblock %}

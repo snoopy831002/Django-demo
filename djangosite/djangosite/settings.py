@@ -25,7 +25,7 @@ SECRET_KEY = 'k&^0l9s98y80bk&y!loie*+3mfo^4iszcv_2ei8wty-$96eulb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -128,3 +128,50 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static_all/")
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'snoopy831002.cs06g@nctu.edu.tw'
+EMAIL_HOST_PASSWORD = '**********'
+DEFAULT_FROM_EMAIL = ''
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
+}
+
+
+
+
+LOGGING = {
+    'version':1,
+    'loggers':{
+        'django':{
+            'handlers':['file'],
+            'level':'DEBUG'
+        }
+    },
+    'handlers':{
+        'file':{
+            'level':'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename':'log.log',
+            'formatter' : 'format_demo'
+        }
+    },
+    #'filters':{
+
+    #},
+    'formatters':{
+        'format_demo': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        }
+    }
+}

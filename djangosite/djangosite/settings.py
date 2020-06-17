@@ -106,6 +106,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'blog.authentication.EmailAuthBackend',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -149,29 +153,3 @@ CACHES = {
 
 
 
-LOGGING = {
-    'version':1,
-    'loggers':{
-        'django':{
-            'handlers':['file'],
-            'level':'DEBUG'
-        }
-    },
-    'handlers':{
-        'file':{
-            'level':'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename':'log.log',
-            'formatter' : 'format_demo'
-        }
-    },
-    #'filters':{
-
-    #},
-    'formatters':{
-        'format_demo': {
-            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
-            'style': '{',
-        }
-    }
-}

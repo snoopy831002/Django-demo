@@ -1,11 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User as auth_user
+import uuid
 
 # Create your models here.
 
 class User(models.Model):
-    firstName = models.CharField(max_length=50)
-    lastName = models.CharField(max_length=50)
+    email = models.CharField(max_length=50)
+    password = models.CharField(max_length=50)
 
 class Articles(models.Model):
     user = models.ForeignKey(auth_user,on_delete=models.CASCADE)
@@ -23,7 +24,7 @@ def create_articles(content):
 
 def get_articles():
     user = auth_user.objects.get(username="root")
-    return Articles.objects.filter(user = user).all()
+    return Articles.objects.filter(user = user).all().order_by("-last_update")
 
 
 #def get_article_owner():

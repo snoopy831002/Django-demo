@@ -8,13 +8,22 @@ from .form import django_form
 from .upload import UploadFileForm
 from .login import login_form
 import os
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import login,authenticate
 from django.core.mail import send_mail
 from django.conf import settings
 from django.core.cache import cache
 from django.views.decorators.cache import cache_page
+from django.core.paginator import  Paginator
+from django.contrib.sessions.models import Session
 import logging
 logger = logging.getLogger('django')
+
+# Create your views here.
+def index(request):
+    return render(request,'index.html',{"form":login_form})
+
+#def login(request):
+#    return render(request, 'login.html', {"form": login_form})
 
 def set_session(request):
     request.session['pref'] = "C++"
@@ -34,9 +43,7 @@ def cookies(request):
     response.set_cookie("pref","PYTHON")
     return response
 
-# Create your views here.
-def index(request):
-    return render(request,'index.html',{"form":login_form})
+
 
 @require_http_methods(['POST'])
 def comments(request):
@@ -75,10 +82,16 @@ def author(request):
         articles = get_articles()
         cache.set("root",articles, 30)
 
+    paginator = Paginator(articles,2)
+    articles = paginator.get_page(request.GET['page'])
+
+    for a in articles:
+        a.id = "123456-12345-5677"
+
     context = {
         "name" : "Snoopy",
         "sidebar" : ["Home","Articles","Authors"],
-        "articles": articles
+        "articles": articles,
     }
     return render(request,"author.html", context)
     #return redirect('articles')
@@ -108,12 +121,13 @@ def download_file(request):
     response['Content-Disposition'] = 'attachment; filename="{}"'.format("download")
     return response
 
-def usr_login(request):
-    user = authenticate(request, username= request.POST['username'], password= request.POST['password'])
-    if user is not None:
-        login(request, user)
-        return HttpResponse("LOGIN SUCCESSFUL =)")
 
+def usr_login(request):
+    Session.objects.all().delete()
+    user = authenticate(username=request.POST['username'], password=request.POST['password'])
+    if user is not None:
+        #login(request, user)
+        return HttpResponse("LOGIN SUCCESSFUL =)")
     else:
         return HttpResponse("LOGIN FAILED QAQ")
 

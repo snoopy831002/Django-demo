@@ -9,6 +9,7 @@ urlpatterns = [
     path('create',views.create, name="create"),
     path('upload',views.upload_file, name="upload"),
     path('download',views.download_file, name="download"),
+path('sign',views.login, name="login"),
 path('login',views.usr_login, name="login"),
 path('cookies',views.cookies, name="cookies"),
 path('get_cookies',views.get_cookies, name="get_cookies"),

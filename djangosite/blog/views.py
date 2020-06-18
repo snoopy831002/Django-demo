@@ -3,7 +3,7 @@ from django.http import HttpResponse,HttpResponseNotFound, JsonResponse
 from django.template import loader
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
-from .models import get_articles
+from .models import get_articles, create_articles
 from .form import django_form
 from .upload import UploadFileForm
 from .login import login_form
@@ -36,7 +36,12 @@ def cookies(request):
 
 # Create your views here.
 def index(request):
-    return render(request,'index.html',{"form":login_form})
+    articles = get_articles()
+    content = {"articles":articles}
+    return render(request,'index.html',content)
+
+def login(request):
+    return render(request, 'login.html')
 
 @require_http_methods(['POST'])
 def comments(request):
@@ -49,12 +54,12 @@ def comments(request):
     #request.schem
     #return HttpResponse("Fucked")
     # Save comments
-    #content = request.POST.get('content')
-    #create_articles(content)
-    #return HttpResponse("Comments updated!")
-    context = {"form":d_form}
+    content = request.POST.get('content')
+    create_articles(content)
+    return HttpResponse("Comments updated!")
+    #context = {"form":d_form}
     #print (a_num)
-    return render(request,"articles.html", context)
+    #return render(request,"articles.html", context)
 
 def articles(request, a_num):
     #return HttpResponse("this is articles")
@@ -111,11 +116,14 @@ def download_file(request):
 def usr_login(request):
     user = authenticate(request, username= request.POST['username'], password= request.POST['password'])
     if user is not None:
-        login(request, user)
-        return HttpResponse("LOGIN SUCCESSFUL =)")
+        form = django_form()
+
+        context = {"form": form, "user": ""}
+        return render(request, "articles.html", context)
+
 
     else:
-        return HttpResponse("LOGIN FAILED QAQ")
+        return render(request, "login.html")
 
 
 def snd_mail(request):

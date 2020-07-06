@@ -8,13 +8,25 @@ from .form import django_form
 from .upload import UploadFileForm
 from .login import login_form
 import os
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
 from django.core.mail import send_mail
 from django.conf import settings
 from django.core.cache import cache
 from django.views.decorators.cache import cache_page
 import logging
 logger = logging.getLogger('django')
+
+#chat
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseForbidden
+from django.contrib.auth.decorators import login_required
+
+#chat
+@login_required
+def course_chat_room(request):
+    return render(request, 'chat/room.html')
+
 
 def set_session(request):
     request.session['pref'] = "C++"
@@ -116,12 +128,8 @@ def download_file(request):
 def usr_login(request):
     user = authenticate(request, username= request.POST['username'], password= request.POST['password'])
     if user is not None:
-        form = django_form()
-
-        context = {"form": form, "user": ""}
-        return render(request, "articles.html", context)
-
-
+        auth_login(request, user)
+        return HttpResponse("Login completed")
     else:
         return render(request, "login.html")
 

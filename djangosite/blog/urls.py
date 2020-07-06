@@ -16,4 +16,5 @@ path('get_cookies',views.get_cookies, name="get_cookies"),
 path('set_session',views.set_session, name="set_session"),
 path('get_session',views.get_session, name="get_session"),
 path('send_mail',views.snd_mail, name="send_mail"),
+path('chat',views.course_chat_room, name="chat"),
 ]

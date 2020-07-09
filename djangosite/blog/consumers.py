@@ -34,7 +34,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             {
                 'type': 'chat_message', # call the below func
-                'message': "message",
+                'message': message,
                 'user': self.user.username,
                 'datetime': now.isoformat(),
             }

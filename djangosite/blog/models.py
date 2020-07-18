@@ -24,10 +24,3 @@ def create_articles(content):
 def get_articles():
     user = auth_user.objects.get(username="root")
     return Articles.objects.filter(user = user).all()
-
-
-#def get_article_owner():
-    #article = Articles.objects.get(id=2)
-    #user = article.user
-
-    #user = Articles.objects.get(id=2).select_related('user')

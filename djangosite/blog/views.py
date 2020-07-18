@@ -1,38 +1,14 @@
-from django.shortcuts import render
-from django.http import HttpResponse,HttpResponseNotFound, JsonResponse
-from django.template import loader
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 from .models import get_articles, create_articles
 from .form import django_form
-from .upload import UploadFileForm
-from .login import login_form
-import os
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate, login as auth_login
 from django.core.mail import send_mail
 from django.conf import settings
 from django.core.cache import cache
-from django.views.decorators.cache import cache_page
-import logging
-logger = logging.getLogger('django')
-
-def set_session(request):
-    request.session['pref'] = "C++"
-    response = HttpResponse("Session set!")
-    return  response
-
-def get_session(request):
-    response = HttpResponse("Session set!"+str(request.session['pref']))
-    return  response
-
-def get_cookies(request):
-    if "pref" in request.COOKIES:
-        print("pref:",request.COOKIES['pref'])
-
-def cookies(request):
-    response = HttpResponse("Cookie set!")
-    response.set_cookie("pref","PYTHON")
-    return response
+#import logging
+#logger = logging.getLogger('django')
 
 # Create your views here.
 def index(request):
@@ -40,26 +16,17 @@ def index(request):
     content = {"articles":articles}
     return render(request,'index.html',content)
 
-def login(request):
-    return render(request, 'login.html')
-
 @require_http_methods(['POST'])
 def comments(request):
-
     d_form = django_form(request.POST)
     if d_form.is_valid():
         print ("form is ok!")
     else :
         print("form is bad!")
-    #request.schem
-    #return HttpResponse("Fucked")
     # Save comments
     content = request.POST.get('content')
     create_articles(content)
     return HttpResponse("Comments updated!")
-    #context = {"form":d_form}
-    #print (a_num)
-    #return render(request,"articles.html", context)
 
 def articles(request, a_num):
     #return HttpResponse("this is articles")
@@ -69,7 +36,6 @@ def articles(request, a_num):
         context = {"form":form,"user":request.user.username}
     else:
         context = {"form":form,"user":""}
-    #print (a_num)
     return render(request,"articles.html", context)
 
 
@@ -86,45 +52,20 @@ def author(request):
         "articles": articles
     }
     return render(request,"author.html", context)
-    #return redirect('articles')
 
-def create(request):
-    create_user()
-    return HttpResponse("User created")
-
-def upload_file(request):
-    if request.method == "POST":
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            print("form valid")
-            with open('/Users/zhonghaoli/upload.txt','wb+') as destination:
-                for chunk in request.FILES['file']:
-                    destination.write(chunk)
-                return HttpResponse("File updated")
-        else:
-            print("form invalid")
-    else:
-        form = UploadFileForm()
-        return  render(request,"upload.html", {"form":form})
-
-def download_file(request):
-    file_path = os.path.join("/Users/zhonghaoli/","../../manage.py".strip('../').strip("./").strip("/"))
-    response = HttpResponse(open(file_path,'rb'),content_type="application/zip")
-    response['Content-Disposition'] = 'attachment; filename="{}"'.format("download")
-    return response
+def login(request):
+    if not request.user.is_authenticated:
+        return render(request, 'login.html')
+    #return render(request, "articles.html")
+    return redirect("index")
 
 def usr_login(request):
     user = authenticate(request, username= request.POST['username'], password= request.POST['password'])
     if user is not None:
-        form = django_form()
-
-        context = {"form": form, "user": ""}
-        return render(request, "articles.html", context)
-
-
+        auth_login(request,user)
+        return render(request, "articles.html")
     else:
         return render(request, "login.html")
-
 
 def snd_mail(request):
     send_mail(

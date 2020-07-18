@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'blog.apps.BlogConfig'
 ]
 
 MIDDLEWARE = [
@@ -57,7 +56,6 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        #'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,7 +69,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'djangosite.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -143,35 +140,5 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'LOCATION': '127.0.0.1:11211',
-    }
-}
-
-
-
-
-LOGGING = {
-    'version':1,
-    'loggers':{
-        'django':{
-            'handlers':['file'],
-            'level':'DEBUG'
-        }
-    },
-    'handlers':{
-        'file':{
-            'level':'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename':'log.log',
-            'formatter' : 'format_demo'
-        }
-    },
-    #'filters':{
-
-    #},
-    'formatters':{
-        'format_demo': {
-            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
-            'style': '{',
-        }
     }
 }

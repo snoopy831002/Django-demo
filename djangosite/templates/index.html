@@ -6,15 +6,18 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-8 col-md-7 py-4">
-          <h4 class="text-white">About</h4>
-          <p class="text-muted">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.</p>
+          <h4 class="text-white">About Me</h4>
+          <p class="text-muted">I am an engineer, thank you and love you</p>
         </div>
         <div class="col-sm-4 offset-md-1 py-4">
-          <h4 class="text-white">Contact</h4>
+          <h4 class="text-white"></h4>
           <ul class="list-unstyled">
-            <li><a href="#" class="text-white">Follow on Twitter</a></li>
-            <li><a href="#" class="text-white">Like on Facebook</a></li>
-            <li><a href="#" class="text-white">Email me</a></li>
+            <li><a href="/blog/create_article" class="text-white">Write a new article</a></li>
+            {% if user.is_authenticated %}
+              <li><a href="/blog/logout" class="text-white">Logout</a></li>
+            {% else %}
+              <li><a href="/blog/signin" class="text-white">Signin</a></li>
+            {% endif %}
           </ul>
         </div>
       </div>
@@ -33,22 +36,24 @@
   </div>
     </header>
     <main role="main">
+      {% if not user.is_authenticated %}
       <section class="jumbotron text-center">
         <div class="container">
-          <h1>This is my blog</h1>
-          <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
+          <h1>This is a blog service</h1>
+          <p class="lead text-muted"> It's a blogger's sharing cosmos, register and create something great with me </p>
           <p>
-            <a href="#" class="btn btn-primary my-2">Main call to action</a>
-            <a href="#" class="btn btn-secondary my-2">Secondary action</a>
+            <a href="#" class="btn btn-primary my-2">Register</a>
+            <a href="#" class="btn btn-secondary my-2">Already a user? Login</a>
           </p>
         </div>
       </section>
+      {% endif %}
 
       <div class="album py-5 bg-light">
           <div class="container">
             {% for a in articles %}
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-12">
                 <div class="card mb-4 shadow-sm">
                   <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
                   <div class="card-body">
@@ -56,7 +61,9 @@
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                        {% if a.user == user %}
+                          <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                        {% endif %}
                       </div>
                       <small class="text-muted">{{ a.last_update }}</small>
                     </div>

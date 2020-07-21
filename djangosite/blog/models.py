@@ -8,10 +8,8 @@ class User(models.Model):
     lastName = models.CharField(max_length=50)
 
 class Tag(models.Model):
-    namevalue = models.DecimalField(max_digits=3,decimal_places=0)
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(max_length=500)
-
     def __str__(self):
         return self.name
 
@@ -29,7 +27,10 @@ def _create_user():
     User.objects.filter(firstName="Snoopy",lastName="Lee").update(firstName="Emily")
 
 def _create_articles(request):
-    Articles.objects.create(user = request.user, title = request.POST['title'], content = request.POST['content'], tags = request.POST['tags'])
+    a = Articles.objects.create(user = request.user, title = request.POST['title'], content = request.POST['content'])
+    query = dict(request.POST)
+    for i in query['tags']:
+        a.tags.add(Tag.objects.get(id=i))
     return
 
 def _get_articles():

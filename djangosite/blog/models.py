@@ -34,5 +34,14 @@ def _create_articles(request):
     return
 
 def _get_articles():
+    #
+    # You should get all articles
+    # not articles posted only by root
+    #
+    #
     user = auth_user.objects.get(username="root")
     return Articles.objects.filter(user = user).all()
+
+def _get_articles_by_id(id):
+    print(Articles.objects.filter(id=id).values())
+    return Articles.objects.filter(id=id)

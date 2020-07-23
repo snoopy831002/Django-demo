@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
-from .models import _get_articles, _create_articles
+from .models import _get_articles, _create_articles, _get_articles_by_id
 from .create_articles import create_articles_form
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.core.mail import send_mail
@@ -21,6 +21,12 @@ def create_article(request):
     else:
         context = {"form":create_articles_form,"user":""}
         return render(request,"create_articles.html",context)
+
+def edit_article(request,id):
+    content = _get_articles_by_id(id)
+    context = {"form":create_articles_form,"content": content}
+    #print(content['title'])
+    return render(request,"create_articles.html",context)
 
 def author(request):
     articles = cache.get("root") # key

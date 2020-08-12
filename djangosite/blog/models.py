@@ -23,9 +23,6 @@ class Articles(models.Model):
         related_name='articles_related_tags'
     )
 
-def _create_user():
-    User.objects.filter(firstName="Snoopy",lastName="Lee").update(firstName="Emily")
-
 def _create_articles(request):
     a = Articles.objects.create(user = request.user, title = request.POST['title'], content = request.POST['content'])
     query = dict(request.POST)
@@ -35,12 +32,10 @@ def _create_articles(request):
 
 def _get_articles():
     #
-    # You should get all articles
-    # not articles posted only by root
+    # Get all of the articles
     #
     #
-    user = auth_user.objects.get(username="root")
-    return Articles.objects.filter(user = user).all()
+    return Articles.objects.all()
 
 def _get_articles_by_id(id):
     print(Articles.objects.filter(id=id).values())

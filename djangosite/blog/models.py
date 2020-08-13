@@ -35,8 +35,7 @@ def _get_articles():
     # Get all of the articles
     #
     #
-    return Articles.objects.all()
+    return Articles.objects.all().order_by('-last_update')
 
 def _get_articles_by_id(id):
-    print(Articles.objects.filter(id=id).values())
-    return Articles.objects.filter(id=id)
+    return Articles.objects.filter(id=id).first() # Uses "first()" because Django objects return objects by default

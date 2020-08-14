@@ -39,3 +39,7 @@ def _get_articles():
 
 def _get_articles_by_id(id):
     return Articles.objects.filter(id=id).first() # Uses "first()" because Django objects return objects by default
+
+def _del_articles_by_id(id):
+    Articles.objects.filter(id=id).delete()
+    return

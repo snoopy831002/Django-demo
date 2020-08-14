@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import _get_articles, _create_articles, _get_articles_by_id
+from .models import _get_articles, _create_articles, _get_articles_by_id, _del_articles_by_id
 from .create_articles import create_articles_form, edit_articles_form
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 
@@ -23,6 +23,10 @@ def edit_article(request,id):
     form = edit_articles_form(id)
     context = {"form":form,"content": content}
     return render(request,"create_articles.html",context)
+
+def delete_article(request,id):
+    _del_articles_by_id(id)
+    return redirect("index")
 
 def author(request):
     context = {

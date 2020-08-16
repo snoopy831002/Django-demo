@@ -1,0 +1,61 @@
+{% extends "base_generic.html" %}
+{% block content %}
+  <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+  </style>
+    </br>
+    </br>
+    <div class="col-md-8 order-md-1">
+      <h4 class="mb-3">Create a new article</h4>
+      <form class="needs-validation" method="post" action="/blog/articles/edit/{{ id }}">  {% csrf_token %}
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="firstName">Title</label>
+            <!-- Form for title -->
+            {{ form.title }}
+            {{ content.title }}
+            <div class="invalid-feedback">
+              Valid first name is required.
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="username">Content</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">My articles:</span>
+            </div>
+            <!-- Form for content -->
+            {{ form.content }}
+            <div class="invalid-feedback" style="width: 100%;">
+              Your username is required.
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-5 mb-3">
+            <label for="country">Article Tag</label>
+            {{ form.tags }}
+            <div class="invalid-feedback">
+              Please select a valid tag.
+            </div>
+          </div>
+        </div>
+        <hr class="mb-4">
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Submit the article</button>
+      </form>
+    </div>
+{% endblock %}

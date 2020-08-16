@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import _get_articles, _create_articles, _get_articles_by_id, _del_articles_by_id
+from .models import _get_articles, _create_articles, _get_articles_by_id, _del_articles_by_id, _edit_articles_by_id
 from .create_articles import create_articles_form, edit_articles_form
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 
@@ -19,10 +19,13 @@ def create_article(request):
         return render(request,"create_articles.html",context)
 
 def edit_article(request,id):
-    content = {}
-    form = edit_articles_form(id)
-    context = {"form":form,"content": content}
-    return render(request,"create_articles.html",context)
+    if request.method == 'POST':
+        _edit_articles_by_id(request,id)
+        return redirect("index")
+    else:
+        form = edit_articles_form(id)
+        context = {"form":form,"id": id}
+        return render(request,"edit_articles.html",context)
 
 def delete_article(request,id):
     _del_articles_by_id(id)

@@ -30,6 +30,15 @@ def _create_articles(request):
         a.tags.add(Tag.objects.get(id=i))
     return
 
+def _edit_articles_by_id(request,id):
+    Articles.objects.filter(id=id).update(title = request.POST['title'], content = request.POST['content']) # No need to update user
+    a = Articles.objects.filter(id=id).get()
+    a.tags.remove() # Remove all of the previous tags
+    query = dict(request.POST)
+    for i in query['tags']:
+        a.tags.add(Tag.objects.get(id=i)) # Update the new tags
+    return
+
 def _get_articles():
     #
     # Get all of the articles

@@ -31,7 +31,7 @@
 
     {% if articles.has_previous %}
         <a href="?page=1">First</a>
-        <a href="?page={{ posts.previous_page_number }}">Previous</a>
+        <a href="?page={{ articles.previous_page_number }}">Previous</a>
     {% endif %}
 
     <span>{{ articles.number }}</span>

@@ -8,8 +8,8 @@ class User(models.Model):
     lastName = models.CharField(max_length=50)
 
 class Tag(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    description = models.TextField(max_length=500)
+    name = models.CharField(max_length=100, unique=True, default='Tech')
+    description = models.TextField(max_length=500, default="Tech")
     def __str__(self):
         return self.name
 
